@@ -67,6 +67,49 @@ with st.expander("📊 변환 테이블 보기 (섭씨 -20℃ ~ 40℃ → 화씨
     df = pd.DataFrame(data)
     st.table(df)
 
+# -------------------------
+# 📂 파일 업로드 기능
+# -------------------------
+st.subheader("📂 파일 업로드 변환")
+
+uploaded_file = st.file_uploader("CSV 파일 업로드 (예: '섭씨' 또는 '화씨' 컬럼 포함)", type=["csv"])
+
+if uploaded_file is not None:
+    file_df = pd.read_csv(uploaded_file)
+
+    st.write("업로드된 데이터 미리보기:")
+    st.dataframe(file_df.head())
+
+    try:
+        if conversion == "섭씨 → 화씨" and "섭씨" in file_df.columns:
+            file_df["화씨"] = file_df["섭씨"].apply(c_to_f)
+
+        elif conversion == "화씨 → 섭씨" and "화씨" in file_df.columns:
+            file_df["섭씨"] = file_df["화씨"].apply(f_to_c)
+
+        elif conversion == "섭씨 → 켈빈" and "섭씨" in file_df.columns:
+            file_df["켈빈"] = file_df["섭씨"].apply(c_to_k)
+
+        elif conversion == "켈빈 → 섭씨" and "켈빈" in file_df.columns:
+            file_df["섭씨"] = file_df["켈빈"].apply(k_to_c)
+
+        else:
+            st.warning("⚠️ CSV에 변환에 필요한 컬럼명이 없습니다. (예: '섭씨', '화씨', '켈빈')")
+
+        st.write("✅ 변환된 데이터:")
+        st.dataframe(file_df)
+
+        # 변환된 파일 다운로드
+        csv = file_df.to_csv(index=False).encode("utf-8-sig")
+        st.download_button(
+            "📥 변환된 CSV 다운로드",
+            data=csv,
+            file_name="converted_temperature.csv",
+            mime="text/csv"
+        )
+    except Exception as e:
+        st.error(f"오류 발생: {e}")
+
 # 푸터
 st.markdown("---")
 st.caption("✨ Made with Streamlit · 온도 변환기 by HJ")
