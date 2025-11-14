@@ -30,17 +30,17 @@ def initialize_db(conn):
     # CSV → 테이블 자동 생성
     conn.execute(f"""
         CREATE TABLE Customer AS
-        SELECT * FROM read_csv_auto('{CSV_CUSTOMER}', header=True, encoding='UTF-8');
+        SELECT * FROM read_csv_auto('{CSV_CUSTOMER}', header=True);
     """)
 
     conn.execute(f"""
         CREATE TABLE Book AS
-        SELECT * FROM read_csv_auto('{CSV_BOOK}', header=True, encoding='UTF-8');
+        SELECT * FROM read_csv_auto('{CSV_BOOK}', header=True);
     """)
 
     conn.execute(f"""
         CREATE TABLE Orders AS
-        SELECT * FROM read_csv_auto('{CSV_ORDERS}', header=True, encoding='UTF-8');
+        SELECT * FROM read_csv_auto('{CSV_ORDERS}', header=True);
     """)
 
     st.success("CSV → DuckDB 초기화 완료!")
@@ -142,5 +142,6 @@ elif menu == "📊 매출분석":
     """)
     st.write("### 📆 월별 매출 추이")
     st.line_chart(df_month.set_index("월"))
+
 
 
