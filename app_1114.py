@@ -8,9 +8,9 @@ st.set_page_config(page_title="📚 마당출판사 DuckDB 관리", layout="wide
 
 DB_PATH = "madang.duckdb"
 
-CSV_CUSTOMER = "/Users/hyojukim/Desktop/학교/4-2/GuiTest/madang_csv/Customer_madang.csv"
-CSV_BOOK     = "/Users/hyojukim/Desktop/학교/4-2/GuiTest/madang_csv/Book_madang.csv"
-CSV_ORDERS   = "/Users/hyojukim/Desktop/학교/4-2/GuiTest/madang_csv/Order_madang.csv"
+CSV_CUSTOMER = "madang_csv/Customer_madang.csv"
+CSV_BOOK     = "madang_csv/Book_madang.csv"
+CSV_ORDERS   = "madang_csv/Order_madang.csv"
 
 @st.cache_resource
 def get_conn():
@@ -142,3 +142,4 @@ elif menu == "📊 매출분석":
     """)
     st.write("### 📆 월별 매출 추이")
     st.line_chart(df_month.set_index("월"))
+
